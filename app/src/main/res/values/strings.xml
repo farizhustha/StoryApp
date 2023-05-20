@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Story App</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="menu_logout">Logout</string>
+    <string name="description_scroll_fragment">DetailScrollView</string>
+    <string name="menu_toAdd">Add Story</string>
+    <string name="capture_description">Capture</string>
+    <string name="rotate_camera_description">Rotate Camera</string>
+    <string name="image_preview_add_des">Image Preview</string>
+    <string name="btn_camera_text_add">Camera</string>
+    <string name="btn_text_gallery_add">Gallery</string>
+    <string name="hint_edt_des_add">Description</string>
+    <string name="btn_text_upload_add">Upload</string>
+    <string name="image_story_des_detail">Image Story</string>
+    <string name="title_signin">Sign in to your Account</string>
+    <string name="btn_text_login_signin">Login</string>
+    <string name="text_signin_register">Don\'t have an account?</string>
+    <string name="register">Register</string>
+    <string name="name">Name</string>
+    <string name="title_signup">Create your account</string>
+    <string name="text_signup_to_signin">I have an account?</string>
+    <string name="log_in">Log in</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="menu_maps">Maps</string>
+</resources>

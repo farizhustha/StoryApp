@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="edt_sign_in_email" type="id"/>
+    <item name="edt_sign_in_password" type="id"/>
+
+    <item name="edt_sign_up_email" type="id"/>
+    <item name="edt_sign_up_password" type="id"/>
+    <item name="edt_sign_up_confirm_password" type="id"/>
+
+</resources>

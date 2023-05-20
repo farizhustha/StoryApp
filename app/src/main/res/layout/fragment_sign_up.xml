@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.auth.signup.SignUpFragment">
+
+    <TextView
+        android:id="@+id/tv_signup_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:alpha="0"
+        android:fontFamily="sans-serif-light"
+        android:text="@string/register"
+        android:textSize="48sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_signup_title2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:alpha="0"
+        android:text="@string/title_signup"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_signup_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_signup_title" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/edt_layout_signup_name"
+        style="@style/Widget.Material3.TextInputLayout.FilledBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:alpha="0"
+        android:hint="@string/name"
+        app:layout_constraintBottom_toTopOf="@+id/edt_layout_signup_email"
+        app:layout_constraintEnd_toEndOf="@+id/tv_signup_title"
+        app:layout_constraintStart_toStartOf="@+id/tv_signup_title2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_signup_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.farizhustha.storyapp.view.EmailInputLayout
+        android:id="@+id/edt_layout_signup_email"
+        style="@style/Widget.Material3.TextInputLayout.FilledBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:alpha="0"
+        app:layout_constraintBottom_toTopOf="@+id/edt_layout_signup_password"
+        app:layout_constraintEnd_toEndOf="@+id/edt_layout_signup_name"
+        app:layout_constraintStart_toStartOf="@+id/edt_layout_signup_name"
+        app:layout_constraintTop_toBottomOf="@+id/edt_layout_signup_name" />
+
+
+    <com.farizhustha.storyapp.view.PasswordInputLayout
+        android:id="@+id/edt_layout_signup_password"
+        style="@style/Widget.Material3.TextInputLayout.FilledBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:alpha="0"
+        app:layout_constraintBottom_toTopOf="@+id/edt_layout_signup_confirm_password"
+        app:layout_constraintEnd_toEndOf="@+id/edt_layout_signup_email"
+        app:layout_constraintStart_toStartOf="@+id/edt_layout_signup_email"
+        app:layout_constraintTop_toBottomOf="@+id/edt_layout_signup_email" />
+
+    <com.farizhustha.storyapp.view.ConfirmPasswordInputLayout
+        android:id="@+id/edt_layout_signup_confirm_password"
+        style="@style/Widget.Material3.TextInputLayout.FilledBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:alpha="0"
+        app:layout_constraintBottom_toTopOf="@+id/btn_signup_register"
+        app:layout_constraintEnd_toEndOf="@+id/edt_layout_signup_password"
+        app:layout_constraintStart_toStartOf="@+id/edt_layout_signup_password"
+        app:layout_constraintTop_toBottomOf="@+id/edt_layout_signup_password" />
+
+    <Button
+        android:id="@+id/btn_signup_register"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:alpha="0"
+        android:enabled="false"
+        android:text="@string/register"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/edt_layout_signup_confirm_password"
+        app:layout_constraintStart_toStartOf="@+id/edt_layout_signup_confirm_password"
+        app:layout_constraintTop_toBottomOf="@+id/edt_layout_signup_confirm_password"
+        tools:ignore="VisualLintButtonSize,DuplicateSpeakableTextCheck" />
+
+    <TextView
+        android:id="@+id/tv_signup_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:alpha="0"
+        android:text="@string/text_signup_to_signin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_signup_login"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@+id/btn_signup_register" />
+
+    <TextView
+        android:id="@+id/btn_signup_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:alpha="0"
+        android:text="@string/log_in"
+        android:textColor="#6750A3"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_signup_login"
+        app:layout_constraintEnd_toEndOf="@+id/btn_signup_register"
+        app:layout_constraintStart_toEndOf="@+id/tv_signup_login" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:progressTint="@color/design_default_color_primary"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
