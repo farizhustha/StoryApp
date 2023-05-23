@@ -12,10 +12,4 @@ object UtilsContext {
         val displayMetrics = resources.displayMetrics
         return (displayMetrics.widthPixels / displayMetrics.density)
     }
-
-    fun Context.getScreenHeight(): Float {
-        val displayMetrics = resources.displayMetrics
-        return (displayMetrics.heightPixels / displayMetrics.density)
-    }
-
 }

@@ -10,14 +10,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.farizhustha.storyapp.R
+import com.farizhustha.storyapp.data.Result
 import com.farizhustha.storyapp.databinding.FragmentSignInBinding
 import com.farizhustha.storyapp.model.User
-import com.farizhustha.storyapp.service.local.UserPreferences
 import com.farizhustha.storyapp.ui.ViewModelFactory
-import com.farizhustha.storyapp.ui.main.dataStore
 import com.farizhustha.storyapp.ui.story.StoryActivity
 import com.farizhustha.storyapp.utils.UtilsContext.dpToPx
 import com.farizhustha.storyapp.utils.UtilsContext.getScreenWidth
@@ -27,7 +26,9 @@ class SignInFragment : Fragment() {
     private var _binding: FragmentSignInBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: SignInViewModel
+    private val viewModel: SignInViewModel by viewModels {
+        ViewModelFactory(context = requireActivity())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -39,7 +40,6 @@ class SignInFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupViewModel()
         setupView()
         setupViewModelObserver()
         playAnimation()
@@ -70,17 +70,27 @@ class SignInFragment : Fragment() {
                 val user = User(
                     email = email.toString(), password = password.toString()
                 )
-                viewModel.login(user)
+                viewModel.login(user).observe(viewLifecycleOwner) { result ->
+                    if (result != null) {
+                        when (result) {
+                            is Result.Loading -> {
+                                binding.progressBar.visibility = View.VISIBLE
+                            }
+                            is Result.Success -> {
+                                binding.progressBar.visibility = View.GONE
+                                Toast.makeText(activity, result.data, Toast.LENGTH_SHORT).show()
+                            }
+                            is Result.Error -> {
+                                binding.progressBar.visibility = View.GONE
+                                Toast.makeText(activity, result.error, Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                }
             }
 
             btnSigninRegister.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_signInFragment_to_signUpFragment))
         }
-    }
-
-    private fun setupViewModel() {
-        val pref = UserPreferences.getInstance(requireActivity().dataStore)
-        val factory = ViewModelFactory(pref)
-        viewModel = ViewModelProvider(this, factory)[SignInViewModel::class.java]
     }
 
     private fun setupViewModelObserver() {
@@ -90,16 +100,6 @@ class SignInFragment : Fragment() {
                 startActivity(intent)
                 requireActivity().finish()
             }
-        }
-
-        viewModel.message.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { message ->
-                Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-            showLoading(isLoading)
         }
     }
 
@@ -114,16 +114,6 @@ class SignInFragment : Fragment() {
         }
     }
 
-    private fun showLoading(isLoading: Boolean) {
-        binding.apply {
-            if (isLoading) {
-                progressBar.visibility = View.VISIBLE
-            } else {
-                progressBar.visibility = View.GONE
-            }
-        }
-    }
-
     private fun playAnimation() {
         val width = requireActivity().dpToPx(requireActivity().getScreenWidth())
 
@@ -131,8 +121,8 @@ class SignInFragment : Fragment() {
             ObjectAnimator.ofFloat(binding.tvSigninTitle, View.ALPHA, 1f).setDuration(2000)
         val titleX =
             ObjectAnimator.ofFloat(binding.tvSigninTitle, View.TRANSLATION_X, -width, 0f).apply {
-                    duration = 2000
-                }
+                duration = 2000
+            }
 
         val email =
             ObjectAnimator.ofFloat(binding.edtLayoutSigninEmail, View.ALPHA, 1f).setDuration(1000)
@@ -146,16 +136,16 @@ class SignInFragment : Fragment() {
         val textRegisterY = ObjectAnimator.ofFloat(
             binding.tvSigninRegister, View.TRANSLATION_Y, requireActivity().dpToPx(40f), 0f
         ).apply {
-                duration = 1000
-            }
+            duration = 1000
+        }
 
         val buttonRegisterFade =
             ObjectAnimator.ofFloat(binding.btnSigninRegister, View.ALPHA, 1f).setDuration(0)
         val buttonRegisterY = ObjectAnimator.ofFloat(
             binding.btnSigninRegister, View.TRANSLATION_Y, requireActivity().dpToPx(40f), 0f
         ).apply {
-                duration = 1000
-            }
+            duration = 1000
+        }
 
         val togetherTitle = AnimatorSet().apply {
             playTogether(titleX, titleFade)

@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.farizhustha.storyapp.di.Injection
 import com.farizhustha.storyapp.service.local.UserPreferences
 import com.farizhustha.storyapp.ui.auth.signin.SignInViewModel
+import com.farizhustha.storyapp.ui.auth.signup.SignUpViewModel
 import com.farizhustha.storyapp.ui.main.MainViewModel
 import com.farizhustha.storyapp.ui.story.StoryViewModel
+import com.farizhustha.storyapp.ui.story.add.AddStoryViewModel
 import com.farizhustha.storyapp.ui.story.detail.DetailStoryViewModel
 import com.farizhustha.storyapp.ui.story.home.HomeStoryViewModel
 import com.farizhustha.storyapp.ui.story.maps.MapsViewModel
@@ -20,9 +22,7 @@ class ViewModelFactory(
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (pref != null) {
-            if (modelClass.isAssignableFrom(SignInViewModel::class.java)) {
-                return SignInViewModel(pref) as T
-            } else if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
+            if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
                 return MainViewModel(pref) as T
             } else if (modelClass.isAssignableFrom(StoryViewModel::class.java)) {
                 return StoryViewModel(pref) as T
@@ -33,7 +33,13 @@ class ViewModelFactory(
             }
         } else if (context != null) {
             if (modelClass.isAssignableFrom(HomeStoryViewModel::class.java)) {
-                return HomeStoryViewModel(Injection.provideRepository(context)) as T
+                return HomeStoryViewModel(Injection.provideStoryRepository(context)) as T
+            } else if (modelClass.isAssignableFrom(AddStoryViewModel::class.java)) {
+                return AddStoryViewModel(Injection.provideStoryRepository(context)) as T
+            } else if (modelClass.isAssignableFrom(SignInViewModel::class.java)) {
+                return SignInViewModel(Injection.provideAuthRepository(context)) as T
+            } else if (modelClass.isAssignableFrom(SignUpViewModel::class.java)) {
+                return SignUpViewModel(Injection.provideAuthRepository(context)) as T
             }
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)

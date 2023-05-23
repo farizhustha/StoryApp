@@ -28,7 +28,6 @@ class DetailStoryViewModel(private val pref: UserPreferences) : ViewModel() {
         getUserToken()
     }
 
-
     private fun getUserToken() {
         viewModelScope.launch {
             pref.getUserToken().collect { authToken ->

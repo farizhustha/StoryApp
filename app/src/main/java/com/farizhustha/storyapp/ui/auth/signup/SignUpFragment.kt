@@ -12,8 +12,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.farizhustha.storyapp.R
+import com.farizhustha.storyapp.data.Result
 import com.farizhustha.storyapp.databinding.FragmentSignUpBinding
 import com.farizhustha.storyapp.model.User
+import com.farizhustha.storyapp.ui.ViewModelFactory
 import com.farizhustha.storyapp.utils.UtilsContext.dpToPx
 import com.farizhustha.storyapp.utils.UtilsContext.getScreenWidth
 
@@ -22,7 +24,9 @@ class SignUpFragment : Fragment() {
     private var _binding: FragmentSignUpBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: SignUpViewModel by viewModels()
+    private val viewModel: SignUpViewModel by viewModels {
+        ViewModelFactory(context = requireActivity())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -35,24 +39,7 @@ class SignUpFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupView()
-        setupViewModelObserver()
         playAnimation()
-    }
-
-    private fun setupViewModelObserver() {
-        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-            showLoading(isLoading)
-        }
-
-        viewModel.message.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { message ->
-                Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
-                if (message == "Register Successfully") {
-                    findNavController().navigateUp()
-                }
-
-            }
-        }
     }
 
     private fun setupView() {
@@ -88,7 +75,24 @@ class SignUpFragment : Fragment() {
                 val password: String = editTextPassword?.text.toString()
 
                 val user = User(name, email, password)
-                viewModel.register(user)
+                viewModel.register(user).observe(viewLifecycleOwner) { result ->
+                    if (result != null) {
+                        when (result) {
+                            is Result.Loading -> {
+                                binding.progressBar.visibility = View.VISIBLE
+                            }
+                            is Result.Success -> {
+                                binding.progressBar.visibility = View.GONE
+                                Toast.makeText(activity, result.data, Toast.LENGTH_SHORT).show()
+                                findNavController().navigateUp()
+                            }
+                            is Result.Error -> {
+                                binding.progressBar.visibility = View.GONE
+                                Toast.makeText(activity, result.error, Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                }
             }
 
             btnSignupLogin.setOnClickListener {
@@ -110,16 +114,6 @@ class SignUpFragment : Fragment() {
 
             btnSignupRegister.isEnabled =
                 !(isNameError || isEmailError || isPasswordError || isConfirmError)
-        }
-    }
-
-    private fun showLoading(isLoading: Boolean) {
-        binding.apply {
-            if (isLoading) {
-                progressBar.visibility = View.VISIBLE
-            } else {
-                progressBar.visibility = View.GONE
-            }
         }
     }
 

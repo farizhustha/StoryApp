@@ -9,7 +9,6 @@ import com.farizhustha.storyapp.data.StoryRepository
 import com.farizhustha.storyapp.service.remote.response.Story
 
 class HomeStoryViewModel(storyRepository: StoryRepository) : ViewModel() {
-
     val story: LiveData<PagingData<Story>> =
         storyRepository.getStory().cachedIn(viewModelScope)
 }

@@ -19,20 +19,20 @@ import retrofit2.http.Query
 interface ApiService {
     @FormUrlEncoded
     @POST("login")
-    fun login(
+    suspend fun login(
         @Field("email") email: String, @Field("password") password: String
-    ): Call<LoginResponse>
+    ): LoginResponse
 
     @FormUrlEncoded
     @POST("register")
-    fun register(
+    suspend fun register(
         @Field("name") name: String,
         @Field("email") email: String,
         @Field("password") password: String
-    ): Call<GeneralResponse>
+    ): GeneralResponse
 
     @GET("stories")
-    fun getAllStories(@Query("location") location: Int): Call<GetAllStoriesResponse>
+    suspend fun getAllStories(@Query("location") location: Int): GetAllStoriesResponse
 
     @GET("stories")
     suspend fun getStoriesWithPaging(
@@ -42,9 +42,19 @@ interface ApiService {
 
     @Multipart
     @POST("stories")
-    fun addStory(
-        @Part file: MultipartBody.Part, @Part("description") description: RequestBody
-    ): Call<GeneralResponse>
+    suspend fun addStory(
+        @Part file: MultipartBody.Part,
+        @Part("description") description: RequestBody
+    ): GeneralResponse
+
+    @Multipart
+    @POST("stories")
+    suspend fun addStoryWithLocation(
+        @Part file: MultipartBody.Part,
+        @Part("description") description: RequestBody,
+        @Part("lat") lat: RequestBody,
+        @Part("lon") lon: RequestBody,
+    ): GeneralResponse
 
     @GET("stories/{id}")
     fun getDetailStory(@Path("id") id: String): Call<GetDetailStoryResponse>

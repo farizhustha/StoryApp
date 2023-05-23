@@ -1,6 +1,7 @@
 package com.farizhustha.storyapp.di
 
 import android.content.Context
+import com.farizhustha.storyapp.data.AuthRepository
 import com.farizhustha.storyapp.data.StoryRepository
 import com.farizhustha.storyapp.database.StoryDatabase
 import com.farizhustha.storyapp.service.local.UserPreferences
@@ -10,7 +11,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
 object Injection {
-    fun provideRepository(context: Context): StoryRepository {
+    fun provideStoryRepository(context: Context): StoryRepository {
 
         val database = StoryDatabase.getDatabase(context)
         val pref = UserPreferences.getInstance(context.dataStore)
@@ -20,5 +21,11 @@ object Injection {
         val apiService = ApiConfig.getApiService(token)
         return StoryRepository(database, apiService)
 
+    }
+
+    fun provideAuthRepository(context: Context): AuthRepository{
+        val pref = UserPreferences.getInstance(context.dataStore)
+        val apiService = ApiConfig.getApiService()
+        return AuthRepository(apiService, pref)
     }
 }

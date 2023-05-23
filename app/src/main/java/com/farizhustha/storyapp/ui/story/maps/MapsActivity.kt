@@ -1,10 +1,8 @@
 package com.farizhustha.storyapp.ui.story.maps
 
-import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.os.Bundle
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.graphics.scale
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -18,10 +16,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.LatLngBounds
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -54,8 +49,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         mMap.uiSettings.isZoomControlsEnabled = true
 
-        getMyLocation()
+        setMapsStyle()
         addManyMarker()
+    }
+
+    private fun setMapsStyle() {
+        try {
+            mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style))
+
+        } catch (_: Resources.NotFoundException) {
+
+        }
     }
 
     private fun addManyMarker() {
@@ -87,25 +91,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     )
                 )
             }
-        }
-    }
-
-    private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted: Boolean ->
-        if (isGranted) {
-            getMyLocation()
-        }
-    }
-
-    private fun getMyLocation() {
-        if (ContextCompat.checkSelfPermission(
-                this.applicationContext, android.Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            mMap.isMyLocationEnabled = true
-        } else {
-            requestPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
         }
     }
 }

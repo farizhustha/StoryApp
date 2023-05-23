@@ -46,9 +46,8 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="24dp"
-        android:layout_marginBottom="24dp"
         android:hint="@string/hint_edt_des_add"
-        app:layout_constraintBottom_toTopOf="@+id/btn_add_upload"
+        app:layout_constraintBottom_toTopOf="@+id/cb_location"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_add_camera">
@@ -73,6 +72,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="VisualLintButtonSize" />
+
+    <CheckBox
+        android:id="@+id/cb_location"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:enabled="false"
+        android:text="Share Story Locations"
+        app:layout_constraintBottom_toTopOf="@+id/btn_add_upload"
+        app:layout_constraintEnd_toEndOf="@+id/edt_layout_add_description"
+        app:layout_constraintStart_toStartOf="@+id/edt_layout_add_description" />
 
     <ProgressBar
         android:id="@+id/progressBar"
