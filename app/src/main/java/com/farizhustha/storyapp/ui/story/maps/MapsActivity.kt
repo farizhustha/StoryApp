@@ -25,7 +25,6 @@ import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -61,22 +60,21 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun addManyMarker() {
         viewModel.listStory.observe(this) { listStory ->
-            lifecycleScope.launch {
+            lifecycleScope.launch(Dispatchers.Main) {
                 listStory.forEach { story ->
                     val photo = async { Utils.downloadImage(story.photoUrl.toString()) }
                     val resultPhoto = photo.await()
-                    if (resultPhoto != null){
-                        withContext(Dispatchers.Main) {
-                            val latLng = LatLng(story.lat as Double, story.lon as Double)
-                            val photoBitmap = BitmapDescriptorFactory.fromBitmap(resultPhoto.scale(100,100))
-                            mMap.addMarker(
-                                MarkerOptions()
-                                    .position(latLng)
-                                    .title(story.name)
-                                    .icon(photoBitmap)
-                            )
-                            boundsBuilder.include(latLng)
-                        }
+                    if (resultPhoto != null) {
+                        val latLng = LatLng(story.lat as Double, story.lon as Double)
+                        val photoBitmap =
+                            BitmapDescriptorFactory.fromBitmap(resultPhoto.scale(100, 100))
+                        mMap.addMarker(
+                            MarkerOptions()
+                                .position(latLng)
+                                .title(story.name)
+                                .icon(photoBitmap)
+                        )
+                        boundsBuilder.include(latLng)
                     }
                 }
                 val bounds: LatLngBounds = boundsBuilder.build()

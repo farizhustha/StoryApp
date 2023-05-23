@@ -1,8 +1,13 @@
 package com.farizhustha.storyapp.service.remote.response
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "story")
 data class Story(
+
+    @PrimaryKey
     @field:SerializedName("id")
     val id: String,
 
@@ -19,9 +24,9 @@ data class Story(
     val description: String? = null,
 
     @field:SerializedName("lon")
-    val lon: Any? = null,
+    val lon: Double? = null,
 
     @field:SerializedName("lat")
-    val lat: Any? = null
+    val lat: Double? = null
 )
 

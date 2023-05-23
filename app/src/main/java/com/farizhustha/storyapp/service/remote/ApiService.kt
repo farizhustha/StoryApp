@@ -34,6 +34,12 @@ interface ApiService {
     @GET("stories")
     fun getAllStories(@Query("location") location: Int): Call<GetAllStoriesResponse>
 
+    @GET("stories")
+    suspend fun getStoriesWithPaging(
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): GetAllStoriesResponse
+
     @Multipart
     @POST("stories")
     fun addStory(
