@@ -1,4 +1,4 @@
-package com.farizhustha.storyapp.database
+package com.farizhustha.storyapp.service.local.room
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

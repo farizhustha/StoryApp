@@ -1,4 +1,4 @@
-package com.farizhustha.storyapp.database
+package com.farizhustha.storyapp.service.local.room
 
 import androidx.room.Dao
 import androidx.room.Insert

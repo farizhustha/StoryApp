@@ -4,12 +4,8 @@ import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.farizhustha.storyapp.data.StoryRepository
 import com.farizhustha.storyapp.model.AddStory
-import kotlinx.coroutines.launch
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import java.io.File
 
 class AddStoryViewModel(private val storyRepository: StoryRepository) : ViewModel() {
@@ -19,17 +15,9 @@ class AddStoryViewModel(private val storyRepository: StoryRepository) : ViewMode
     private val _location = MutableLiveData<Location>()
     val location : LiveData<Location> = _location
 
-    fun addStory(photo: MultipartBody.Part, description: RequestBody) {
-        viewModelScope.launch {
-            storyRepository.addStory(photo, description)
-        }
-    }
+    fun addStory(item:AddStory) = storyRepository.addStory(item)
 
-    fun addStoryWithLocation(item: AddStory){
-        viewModelScope.launch {
-            storyRepository.addStoryWithLocation(item)
-        }
-    }
+    fun addStoryWithLocation(item: AddStory) = storyRepository.addStoryWithLocation(item)
 
     fun setFile(file: File) {
         _file.value = file

@@ -1,4 +1,4 @@
-package com.farizhustha.storyapp.database
+package com.farizhustha.storyapp.service.local.room
 
 import android.content.Context
 import androidx.room.Database

@@ -49,11 +49,11 @@ class HomeStoryFragment : Fragment() {
             findNavController().navigate(toDetailFragment)
         }
         binding.rvHomeStory.adapter = adapter.withLoadStateFooter(
-            footer = LoadingStateAdapter{
+            footer = LoadingStateAdapter {
                 adapter.retry()
             }
         )
-        viewModel.story.observe(viewLifecycleOwner){
+        viewModel.story.observe(viewLifecycleOwner) {
             adapter.submitData(lifecycle, it)
         }
     }

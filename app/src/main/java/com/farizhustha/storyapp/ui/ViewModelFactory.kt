@@ -21,27 +21,31 @@ class ViewModelFactory(
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (pref != null) {
-            if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
-                return MainViewModel(pref) as T
-            } else if (modelClass.isAssignableFrom(StoryViewModel::class.java)) {
-                return StoryViewModel(pref) as T
-            } else if (modelClass.isAssignableFrom(DetailStoryViewModel::class.java)) {
-                return DetailStoryViewModel(pref) as T
-            } else if (modelClass.isAssignableFrom(MapsViewModel::class.java)) {
-                return MapsViewModel(pref) as T
-            }
-        } else if (context != null) {
+
+        if (context != null) {
             if (modelClass.isAssignableFrom(HomeStoryViewModel::class.java)) {
                 return HomeStoryViewModel(Injection.provideStoryRepository(context)) as T
             } else if (modelClass.isAssignableFrom(AddStoryViewModel::class.java)) {
                 return AddStoryViewModel(Injection.provideStoryRepository(context)) as T
+            } else if (modelClass.isAssignableFrom(DetailStoryViewModel::class.java)) {
+                return DetailStoryViewModel(Injection.provideStoryRepository(context)) as T
+            } else if (modelClass.isAssignableFrom(MapsViewModel::class.java)) {
+                return MapsViewModel(Injection.provideStoryRepository(context)) as T
             } else if (modelClass.isAssignableFrom(SignInViewModel::class.java)) {
                 return SignInViewModel(Injection.provideAuthRepository(context)) as T
             } else if (modelClass.isAssignableFrom(SignUpViewModel::class.java)) {
                 return SignUpViewModel(Injection.provideAuthRepository(context)) as T
             }
         }
+
+        if (pref != null) {
+            if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
+                return MainViewModel(pref) as T
+            } else if (modelClass.isAssignableFrom(StoryViewModel::class.java)) {
+                return StoryViewModel(pref) as T
+            }
+        }
+
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }
 }

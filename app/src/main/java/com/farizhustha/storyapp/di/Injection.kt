@@ -3,7 +3,7 @@ package com.farizhustha.storyapp.di
 import android.content.Context
 import com.farizhustha.storyapp.data.AuthRepository
 import com.farizhustha.storyapp.data.StoryRepository
-import com.farizhustha.storyapp.database.StoryDatabase
+import com.farizhustha.storyapp.service.local.room.StoryDatabase
 import com.farizhustha.storyapp.service.local.UserPreferences
 import com.farizhustha.storyapp.service.remote.ApiConfig
 import com.farizhustha.storyapp.ui.main.dataStore

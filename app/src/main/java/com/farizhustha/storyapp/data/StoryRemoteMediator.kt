@@ -5,8 +5,8 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
-import com.farizhustha.storyapp.database.RemoteKeys
-import com.farizhustha.storyapp.database.StoryDatabase
+import com.farizhustha.storyapp.service.local.room.RemoteKeys
+import com.farizhustha.storyapp.service.local.room.StoryDatabase
 import com.farizhustha.storyapp.service.remote.ApiService
 import com.farizhustha.storyapp.service.remote.response.Story
 

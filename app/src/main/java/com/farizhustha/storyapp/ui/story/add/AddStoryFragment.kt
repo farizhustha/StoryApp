@@ -18,6 +18,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.farizhustha.storyapp.data.Result
 import com.farizhustha.storyapp.databinding.FragmentAddStoryBinding
 import com.farizhustha.storyapp.model.AddStory
 import com.farizhustha.storyapp.ui.ViewModelFactory
@@ -159,9 +161,44 @@ class AddStoryFragment : Fragment() {
                 val longitude =
                     location.longitude.toString().toRequestBody("text/plain".toMediaType())
                 val item = AddStory(imageMultipart, description, latitude, longitude)
-                viewModel.addStoryWithLocation(item)
+                viewModel.addStoryWithLocation(item).observe(viewLifecycleOwner) { result ->
+                    if (result != null) {
+                        when (result) {
+                            is Result.Loading -> {
+                                binding.progressBar.visibility = View.VISIBLE
+                            }
+                            is Result.Success -> {
+                                binding.progressBar.visibility = View.GONE
+                                Toast.makeText(activity, result.data, Toast.LENGTH_SHORT).show()
+                                findNavController().navigateUp()
+                            }
+                            is Result.Error -> {
+                                binding.progressBar.visibility = View.GONE
+                                Toast.makeText(activity, result.error, Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                }
             } else {
-                viewModel.addStory(imageMultipart, description)
+                val item = AddStory(imageMultipart, description)
+                viewModel.addStory(item).observe(viewLifecycleOwner) { result ->
+                    if (result != null) {
+                        when (result) {
+                            is Result.Loading -> {
+                                binding.progressBar.visibility = View.VISIBLE
+                            }
+                            is Result.Success -> {
+                                binding.progressBar.visibility = View.GONE
+                                Toast.makeText(activity, result.data, Toast.LENGTH_SHORT).show()
+                                findNavController().navigateUp()
+                            }
+                            is Result.Error -> {
+                                binding.progressBar.visibility = View.GONE
+                                Toast.makeText(activity, result.error, Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                }
             }
 
 

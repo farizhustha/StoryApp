@@ -1,14 +1,15 @@
 package com.farizhustha.storyapp.data
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.liveData
 import androidx.paging.*
-import com.farizhustha.storyapp.database.RemoteKeys
-import com.farizhustha.storyapp.database.StoryDatabase
+import com.farizhustha.storyapp.service.local.room.RemoteKeys
+import com.farizhustha.storyapp.service.local.room.StoryDatabase
 import com.farizhustha.storyapp.model.AddStory
 import com.farizhustha.storyapp.service.remote.ApiService
 import com.farizhustha.storyapp.service.remote.response.Story
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
+import org.json.JSONObject
+import retrofit2.HttpException
 
 class StoryRepository(
     private val storyDatabase: StoryDatabase,
@@ -27,7 +28,27 @@ class StoryRepository(
         ).liveData
     }
 
-    private suspend fun getAllStories() {
+    fun getAllStoriesWithLocation(): LiveData<Result<List<Story>>> = liveData {
+        emit(Result.Loading)
+        try {
+            val response =
+                apiService.getAllStories(1)
+            val listStory = response.listStory
+            if (listStory != null) {
+                emit(Result.Success(listStory))
+            }
+        } catch (e: HttpException) {
+            val errorBody = e.response()?.errorBody()?.string()
+            val errorMessage = errorBody?.let {
+                JSONObject(it).getString("message")
+            }
+            emit(Result.Error(errorMessage ?: "Error"))
+        }
+    }
+
+    fun getDetailStory(id: String) = storyDatabase.storyDao().getDetailStory(id)
+
+    private suspend fun getStoriesWithPaging() {
         try {
             val page = 1
             val size = 5
@@ -46,23 +67,49 @@ class StoryRepository(
         }
     }
 
-    suspend fun addStory(photo: MultipartBody.Part, description: RequestBody) {
-        try {
-            apiService.addStory(photo, description)
-            getAllStories()
+    fun addStory(item: AddStory): LiveData<Result<String>> =
+        liveData {
+            emit(Result.Loading)
+            try {
+                val response = apiService.addStory(item.photo, item.description)
+                val message = response.message
+                getStoriesWithPaging()
+                if (message != null) {
+                    emit(Result.Success(message))
+                }
 
-        } catch (_: Exception) {
+            } catch (e: HttpException) {
+                val errorBody = e.response()?.errorBody()?.string()
+                val errorMessage = errorBody?.let {
+                    JSONObject(it).getString("message")
+                }
+                emit(Result.Error(errorMessage ?: "Error"))
+            }
         }
-    }
 
-    suspend fun addStoryWithLocation(item: AddStory) {
+    fun addStoryWithLocation(item: AddStory): LiveData<Result<String>> = liveData {
+        emit(Result.Loading)
         try {
             if (item.lat != null && item.lon != null) {
-                apiService.addStoryWithLocation(item.photo, item.description, item.lat, item.lon)
-                getAllStories()
+                val response = apiService.addStoryWithLocation(
+                    item.photo,
+                    item.description,
+                    item.lat,
+                    item.lon
+                )
+                val message = response.message
+                getStoriesWithPaging()
+                if (message != null) {
+                    emit(Result.Success(message))
+                }
             }
 
-        } catch (_: Exception) {
+        } catch (e: HttpException) {
+            val errorBody = e.response()?.errorBody()?.string()
+            val errorMessage = errorBody?.let {
+                JSONObject(it).getString("message")
+            }
+            emit(Result.Error(errorMessage ?: "Error"))
         }
     }
 }
