@@ -24,7 +24,7 @@ import com.farizhustha.storyapp.utils.UtilsContext.getScreenWidth
 class SignInFragment : Fragment() {
 
     private var _binding: FragmentSignInBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
 
     private val viewModel: SignInViewModel by viewModels {
         ViewModelFactory(context = requireActivity())
@@ -32,9 +32,9 @@ class SignInFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         _binding = FragmentSignInBinding.inflate(inflater, container, false)
-        return binding.root
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,7 +48,7 @@ class SignInFragment : Fragment() {
 
     private fun setupView() {
 
-        binding.apply {
+        binding?.apply {
             val editTextEmail = edtLayoutSigninEmail.editText
             val editTextPassword = edtLayoutSigninPassword.editText
 
@@ -74,14 +74,14 @@ class SignInFragment : Fragment() {
                     if (result != null) {
                         when (result) {
                             is Result.Loading -> {
-                                binding.progressBar.visibility = View.VISIBLE
+                                binding?.progressBar?.visibility = View.VISIBLE
                             }
                             is Result.Success -> {
-                                binding.progressBar.visibility = View.GONE
+                                binding?.progressBar?.visibility = View.GONE
                                 Toast.makeText(activity, result.data, Toast.LENGTH_SHORT).show()
                             }
                             is Result.Error -> {
-                                binding.progressBar.visibility = View.GONE
+                                binding?.progressBar?.visibility = View.GONE
                                 Toast.makeText(activity, result.error, Toast.LENGTH_SHORT).show()
                             }
                         }
@@ -105,7 +105,7 @@ class SignInFragment : Fragment() {
 
     private fun updateButtonStatus() {
 
-        binding.apply {
+        binding?.apply {
             val isEmailError =
                 edtLayoutSigninEmail.editText?.text.isNullOrEmpty() || edtLayoutSigninEmail.error != null
             val isPasswordError =
@@ -118,31 +118,31 @@ class SignInFragment : Fragment() {
         val width = requireActivity().dpToPx(requireActivity().getScreenWidth())
 
         val titleFade =
-            ObjectAnimator.ofFloat(binding.tvSigninTitle, View.ALPHA, 1f).setDuration(2000)
+            ObjectAnimator.ofFloat(binding?.tvSigninTitle, View.ALPHA, 1f).setDuration(2000)
         val titleX =
-            ObjectAnimator.ofFloat(binding.tvSigninTitle, View.TRANSLATION_X, -width, 0f).apply {
+            ObjectAnimator.ofFloat(binding?.tvSigninTitle, View.TRANSLATION_X, -width, 0f).apply {
                 duration = 2000
             }
 
         val email =
-            ObjectAnimator.ofFloat(binding.edtLayoutSigninEmail, View.ALPHA, 1f).setDuration(1000)
-        val password = ObjectAnimator.ofFloat(binding.edtLayoutSigninPassword, View.ALPHA, 1f)
+            ObjectAnimator.ofFloat(binding?.edtLayoutSigninEmail, View.ALPHA, 1f).setDuration(1000)
+        val password = ObjectAnimator.ofFloat(binding?.edtLayoutSigninPassword, View.ALPHA, 1f)
             .setDuration(1000)
         val buttonLogin =
-            ObjectAnimator.ofFloat(binding.btnSigninLogin, View.ALPHA, 1f).setDuration(1000)
+            ObjectAnimator.ofFloat(binding?.btnSigninLogin, View.ALPHA, 1f).setDuration(1000)
 
         val textRegisterFade =
-            ObjectAnimator.ofFloat(binding.tvSigninRegister, View.ALPHA, 1f).setDuration(0)
+            ObjectAnimator.ofFloat(binding?.tvSigninRegister, View.ALPHA, 1f).setDuration(0)
         val textRegisterY = ObjectAnimator.ofFloat(
-            binding.tvSigninRegister, View.TRANSLATION_Y, requireActivity().dpToPx(40f), 0f
+            binding?.tvSigninRegister, View.TRANSLATION_Y, requireActivity().dpToPx(40f), 0f
         ).apply {
             duration = 1000
         }
 
         val buttonRegisterFade =
-            ObjectAnimator.ofFloat(binding.btnSigninRegister, View.ALPHA, 1f).setDuration(0)
+            ObjectAnimator.ofFloat(binding?.btnSigninRegister, View.ALPHA, 1f).setDuration(0)
         val buttonRegisterY = ObjectAnimator.ofFloat(
-            binding.btnSigninRegister, View.TRANSLATION_Y, requireActivity().dpToPx(40f), 0f
+            binding?.btnSigninRegister, View.TRANSLATION_Y, requireActivity().dpToPx(40f), 0f
         ).apply {
             duration = 1000
         }

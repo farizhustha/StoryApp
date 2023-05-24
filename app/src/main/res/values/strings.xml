@@ -23,4 +23,6 @@
     <string name="log_in">Log in</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="menu_maps">Maps</string>
+    <string name="cb_add_text">Share Story Locations</string>
+    <string name="btn_retry_item_loading_state">Coba lagi</string>
 </resources>

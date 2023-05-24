@@ -15,7 +15,7 @@ import com.farizhustha.storyapp.utils.Utils
 class DetailStoryFragment : Fragment() {
 
     private var _binding: FragmentDetailStoryBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
     private val args: DetailStoryFragmentArgs by navArgs()
     private val viewModel: DetailStoryViewModel by viewModels {
         ViewModelFactory(context = requireActivity())
@@ -23,9 +23,9 @@ class DetailStoryFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         _binding = FragmentDetailStoryBinding.inflate(inflater, container, false)
-        return binding.root
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,7 +36,7 @@ class DetailStoryFragment : Fragment() {
 
     private fun setupViewModelObserver() {
         viewModel.getDetailStory(args.id).observe(viewLifecycleOwner) { story ->
-            binding.apply {
+            binding?.apply {
                 Glide.with(requireActivity()).load(story.photoUrl).into(ivDetailPhoto)
 
                 tvDetailName.text = story.name

@@ -79,10 +79,11 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:enabled="false"
-        android:text="Share Story Locations"
+        android:text="@string/cb_add_text"
         app:layout_constraintBottom_toTopOf="@+id/btn_add_upload"
         app:layout_constraintEnd_toEndOf="@+id/edt_layout_add_description"
-        app:layout_constraintStart_toStartOf="@+id/edt_layout_add_description" />
+        app:layout_constraintStart_toStartOf="@+id/edt_layout_add_description"
+        tools:ignore="VisualLintButtonSize" />
 
     <ProgressBar
         android:id="@+id/progressBar"

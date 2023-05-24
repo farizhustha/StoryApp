@@ -16,7 +16,7 @@ import com.farizhustha.storyapp.ui.ViewModelFactory
 class HomeStoryFragment : Fragment() {
 
     private var _binding: FragmentHomeStoryBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
 
     private val viewModel: HomeStoryViewModel by viewModels {
         ViewModelFactory(context = requireActivity())
@@ -24,9 +24,9 @@ class HomeStoryFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         _binding = FragmentHomeStoryBinding.inflate(inflater, container, false)
-        return binding.root
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,7 +38,7 @@ class HomeStoryFragment : Fragment() {
 
     private fun setupView() {
         val layoutManager = LinearLayoutManager(activity)
-        binding.rvHomeStory.layoutManager = layoutManager
+        binding?.rvHomeStory?.layoutManager = layoutManager
     }
 
     private fun setListStoryData() {
@@ -48,7 +48,7 @@ class HomeStoryFragment : Fragment() {
             toDetailFragment.id = story.id
             findNavController().navigate(toDetailFragment)
         }
-        binding.rvHomeStory.adapter = adapter.withLoadStateFooter(
+        binding?.rvHomeStory?.adapter = adapter.withLoadStateFooter(
             footer = LoadingStateAdapter {
                 adapter.retry()
             }

@@ -36,7 +36,7 @@ import java.io.File
 class AddStoryFragment : Fragment() {
 
     private var _binding: FragmentAddStoryBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     private val viewModel: AddStoryViewModel by viewModels {
@@ -48,9 +48,9 @@ class AddStoryFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         _binding = FragmentAddStoryBinding.inflate(inflater, container, false)
-        return binding.root
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -92,14 +92,14 @@ class AddStoryFragment : Fragment() {
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
                 if (location != null) {
                     viewModel.setLocation(location)
-                    binding.cbLocation.isEnabled = true
+                    binding?.cbLocation?.isEnabled = true
                 } else {
                     Toast.makeText(
                         activity,
                         "Location is not found. Try Again",
                         Toast.LENGTH_SHORT
                     ).show()
-                    binding.cbLocation.isEnabled = false
+                    binding?.cbLocation?.isEnabled = false
                 }
             }
 
@@ -115,7 +115,7 @@ class AddStoryFragment : Fragment() {
     }
 
     private fun setupView() {
-        binding.apply {
+        binding?.apply {
             btnAddCamera.setOnClickListener { startCameraX() }
             btnAddGallery.setOnClickListener { startGallery() }
             btnAddUpload.setOnClickListener { upload() }
@@ -135,7 +135,7 @@ class AddStoryFragment : Fragment() {
 
         viewModel.file.observe(viewLifecycleOwner) { file ->
             getFile = file
-            binding.ivAddPreview.setImageBitmap(BitmapFactory.decodeFile(file.path))
+            binding?.ivAddPreview?.setImageBitmap(BitmapFactory.decodeFile(file.path))
         }
 
         viewModel.location.observe(viewLifecycleOwner) { location ->
@@ -144,7 +144,7 @@ class AddStoryFragment : Fragment() {
     }
 
     private fun upload() {
-        val text = binding.edtAddDescription.text
+        val text = binding?.edtAddDescription?.text
 
         if (getFile != null) {
             val file = Utils.reduceFileImage(getFile as File)
@@ -154,7 +154,7 @@ class AddStoryFragment : Fragment() {
             val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
                 "photo", file.name, requestImageFile
             )
-            if (binding.cbLocation.isChecked) {
+            if (binding?.cbLocation?.isChecked == true) {
                 val location = getLocation as Location
                 val latitude =
                     location.latitude.toString().toRequestBody("text/plain".toMediaType())
@@ -165,15 +165,15 @@ class AddStoryFragment : Fragment() {
                     if (result != null) {
                         when (result) {
                             is Result.Loading -> {
-                                binding.progressBar.visibility = View.VISIBLE
+                                binding?.progressBar?.visibility = View.VISIBLE
                             }
                             is Result.Success -> {
-                                binding.progressBar.visibility = View.GONE
+                                binding?.progressBar?.visibility = View.GONE
                                 Toast.makeText(activity, result.data, Toast.LENGTH_SHORT).show()
                                 findNavController().navigateUp()
                             }
                             is Result.Error -> {
-                                binding.progressBar.visibility = View.GONE
+                                binding?.progressBar?.visibility = View.GONE
                                 Toast.makeText(activity, result.error, Toast.LENGTH_SHORT).show()
                             }
                         }
@@ -185,15 +185,15 @@ class AddStoryFragment : Fragment() {
                     if (result != null) {
                         when (result) {
                             is Result.Loading -> {
-                                binding.progressBar.visibility = View.VISIBLE
+                                binding?.progressBar?.visibility = View.VISIBLE
                             }
                             is Result.Success -> {
-                                binding.progressBar.visibility = View.GONE
+                                binding?.progressBar?.visibility = View.GONE
                                 Toast.makeText(activity, result.data, Toast.LENGTH_SHORT).show()
                                 findNavController().navigateUp()
                             }
                             is Result.Error -> {
-                                binding.progressBar.visibility = View.GONE
+                                binding?.progressBar?.visibility = View.GONE
                                 Toast.makeText(activity, result.error, Toast.LENGTH_SHORT).show()
                             }
                         }
@@ -253,7 +253,7 @@ class AddStoryFragment : Fragment() {
     }
 
     private fun updateButtonStatus() {
-        binding.apply {
+        binding?.apply {
             btnAddUpload.isEnabled = !(edtAddDescription.text.isNullOrEmpty())
         }
     }
