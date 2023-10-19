@@ -31,7 +31,7 @@ class ConfirmPasswordEditText : TextInputEditText {
         setupInitEditText()
     }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         typeface = Typeface.DEFAULT
     }

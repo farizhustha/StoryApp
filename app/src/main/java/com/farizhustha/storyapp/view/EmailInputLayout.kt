@@ -37,7 +37,7 @@ class EmailInputLayout : TextInputLayout {
         addView(inputEditText)
     }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         hint = "Email"
     }

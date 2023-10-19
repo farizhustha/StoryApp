@@ -33,7 +33,7 @@ class ConfirmPasswordInputLayout : TextInputLayout {
         addView(inputEditText)
     }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         endIconMode = END_ICON_PASSWORD_TOGGLE
         hint = "Confirm Password"
